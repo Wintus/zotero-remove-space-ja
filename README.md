@@ -62,7 +62,7 @@ If you are using this repo, I recommended that you put the following badge on yo
   - Global variables and environment setup;
 - Plugin develop/build/release workflow:
   - ⭐ [New!] Auto hot reload! Whenever the source code is modified, automatically compile and reload. [See here→](#auto-hot-reload)
-  - Automatically generate/update plugin id/version, update configrations, and set environment variables (`development` / `production`);
+  - Automatically generate/update plugin id/version, update configurations, and set environment variables (`development` / `production`);
   - Automatically release to GitHub;
 - Prettier and ES Lint integration.
 
@@ -82,7 +82,6 @@ Search `@example` in `src/examples.ts`. The examples are called in `src/hooks.ts
 - registerShortcuts
 - exampleShortcutLargerCallback
 - exampleShortcutSmallerCallback
-- exampleShortcutConflictionCallback
 
 ### UI Examples
 
@@ -91,7 +90,7 @@ Search `@example` in `src/examples.ts`. The examples are called in `src/hooks.ts
 - registerStyleSheet(the official make-it-red example)
 - registerRightClickMenuItem
 - registerRightClickMenuPopup
-- registerWindowMenuWithSeprator
+- registerWindowMenuWithSeparator
 - registerExtraColumn
 - registerExtraColumnWithCustomCell
 - registerCustomItemBoxRow
@@ -139,7 +138,7 @@ Activate with `Shift+P`.
 > [!note]
 > This guide assumes that you have an initial understanding of the basic structure and workings of the Zotero plugin. If you don't, please refer to the [documentation](https://www.zotero.org/support/dev/zotero_7_for_developers) and official plugin examples [Make It Red](https://github.com/zotero/make-it-red) first.
 
-### 1 Creat Your Repo
+### 1 Create Your Repo
 
 1. Click `Use this template`
 2. Git clone your new repo
@@ -190,7 +189,7 @@ Activate with `Shift+P`.
 
 2. Copy the environment variable file. Modify the commands that starts your installation of the beta Zotero.
 
-   > Create a development profile (Optional)  
+   > Create a development profile (Optional)
    > Start the beta Zotero with `/path/to/zotero -p`. Create a new profile and use it as your development profile. Do this only once
 
    ```sh
@@ -391,8 +390,8 @@ This section shows the directory structure of a template.
 |-- typings                   # ts typings
 |   `-- global.d.ts
 
-|-- .env                      # enviroment config (do not check into repo)
-|-- .env.example              # template of enviroment config, https://github.com/northword/zotero-plugin-scaffold
+|-- .env                      # environment config (do not check into repo)
+|-- .env.example              # template of environment config, https://github.com/northword/zotero-plugin-scaffold
 |-- .gitignore                # git conf
 |-- .gitattributes            # git conf
 |-- .prettierrc               # prettier conf, https://prettier.io/
