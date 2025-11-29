@@ -1,24 +1,24 @@
 {
-  "name": "zotero-plugin-template",
+  "name": "zotero-remove-space-ja",
   "type": "module",
-  "version": "3.1.0",
-  "description": "Zotero Plugin Template",
+  "version": "0.1.0",
+  "description": "Remove unnecessary spaces from Japanese text in PDF annotations",
   "config": {
-    "addonName": "Zotero Plugin Template",
-    "addonID": "addontemplate@euclpts.com",
-    "addonRef": "addontemplate",
-    "addonInstance": "AddonTemplate",
-    "prefsPrefix": "extensions.zotero.addontemplate"
+    "addonName": "Remove Space (JA)",
+    "addonID": "removespace-ja@wintus.github.io",
+    "addonRef": "removespace-ja",
+    "addonInstance": "RemoveSpaceJA",
+    "prefsPrefix": "extensions.zotero.removespace-ja"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/windingwind/zotero-plugin-template.git"
+    "url": "git+https://github.com/Wintus/zotero-remove-space-ja.git"
   },
-  "author": "windingwind",
+  "author": "Wintus",
   "bugs": {
-    "url": "https://github.com/windingwind/zotero-plugin-template/issues"
+    "url": "https://github.com/Wintus/zotero-remove-space-ja/issues"
   },
-  "homepage": "https://github.com/windingwind/zotero-plugin-template#readme",
+  "homepage": "https://github.com/Wintus/zotero-remove-space-ja#readme",
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "start": "zotero-plugin serve",

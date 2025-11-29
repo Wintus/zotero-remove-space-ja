@@ -22,18 +22,8 @@ When using the Zotero PDF reader to select and highlight text in PDFs, unnecessa
 
 **Tasks**:
 
-1. Update `package.json` configuration:
-   - `name`: `zotero-remove-space-ja`
-   - `config.addonName`: `"Remove Space (JA)"` - Display name in Zotero's plugin manager
-   - `config.addonID`: `"removespace-ja@wintus.com"` - **CRITICAL**: Must be globally unique
-   - `config.addonRef`: `"removespace-ja"` - Used as prefix for DOM IDs and CSS classes
-   - `config.addonInstance`: `"RemoveSpaceJA"` - Accessible as `Zotero.RemoveSpaceJA`
-   - `config.prefsPrefix`: `"extensions.zotero.removespace-ja"` - Preference keys prefix
-   - `repository`: `"https://github.com/Wintus/zotero-remove-space-ja"`
-   - `author`: Update to your name/info
-   - `bugs`: `"https://github.com/Wintus/zotero-remove-space-ja/issues"`
-   - `homepage`: `"https://github.com/Wintus/zotero-remove-space-ja#readme"`
-   - `description`: `"Remove unnecessary spaces from Japanese text in PDF annotations"`
+1. Update `package.json` configuration: (completed)
+   - `package.json` updated with project values (name, `config.*`, `repository`, `author`, `bugs`, `homepage`, and `description`).
 
 2. Create `.env` file:
    - Copy from `.env.example`
