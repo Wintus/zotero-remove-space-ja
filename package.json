@@ -5,7 +5,7 @@
   "description": "Remove unnecessary spaces from Japanese text in PDF annotations",
   "config": {
     "addonName": "Remove Space (JA)",
-    "addonID": "removespace-ja@wintus.com",
+    "addonID": "removespace-ja@wintus.github.io",
     "addonRef": "removespace-ja",
     "addonInstance": "RemoveSpaceJA",
     "prefsPrefix": "extensions.zotero.removespace-ja"
