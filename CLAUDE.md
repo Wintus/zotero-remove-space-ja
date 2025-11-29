@@ -182,3 +182,5 @@ const itemIDs = await s.search();
 - Preference keys are automatically prefixed with `prefsPrefix` during build
 - FTL localization files are automatically prefixed to avoid conflicts
 - Environment variable `addon.data.env` is `"development"` or `"production"` - use this to enable/disable features
+- Update `CLAUDE.md` and/or `plan.md` when an item gets done.
+- Commit changes in adequate units.
