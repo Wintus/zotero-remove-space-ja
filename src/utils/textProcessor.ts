@@ -10,19 +10,22 @@
  *
  * Pattern explanation:
  * - `(?<=...)` - Positive lookbehind: ensures the space comes after a Japanese character
- * - `\p{Script=Han}` - Matches Han characters (Kanji/Chinese characters)
- * - `\p{Script=Hiragana}` - Matches Hiragana characters
- * - `\p{Script=Katakana}` - Matches Katakana characters
+ * - `\p{scx=Han}` - Matches Han characters (Kanji/Chinese characters) using Script_Extensions
+ * - `\p{scx=Hiragana}` - Matches Hiragana characters using Script_Extensions
+ * - `\p{scx=Katakana}` - Matches Katakana characters using Script_Extensions
  * - `\s+` - Matches one or more whitespace characters
  * - `(?=...)` - Positive lookahead: ensures the space is followed by a Japanese character
  * - `g` flag - Global matching (replace all occurrences)
- * - `u` flag - Unicode mode (required for \p{Script=...} syntax)
+ * - `u` flag - Unicode mode (required for \p{scx=...} syntax)
+ *
+ * Note: Using `scx` (Script_Extensions) instead of `Script` catches more characters
+ * commonly used in Japanese text, including certain punctuation and shared characters.
  *
  * This pattern automatically preserves spaces between Japanese and non-Japanese
  * characters (e.g., Latin letters, numbers), which is the desired behavior.
  */
 export const japaneseSpacePattern: RegExp =
-  /(?<=[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}])\s+(?=[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}])/gu;
+  /(?<=[\p{scx=Han}\p{scx=Hiragana}\p{scx=Katakana}])\s+(?=[\p{scx=Han}\p{scx=Hiragana}\p{scx=Katakana}])/gu;
 
 /**
  * Remove unnecessary spaces from text containing Japanese characters.
