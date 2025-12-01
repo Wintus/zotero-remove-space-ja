@@ -16,34 +16,35 @@ When using the Zotero PDF reader to select and highlight text in PDFs, unnecessa
 
 ## Development Phases
 
-### Phase 1: Project Setup and Configuration
+### Phase 1: Project Setup and Configuration ✅ COMPLETED
 
 **Goal**: Customize the template for this specific plugin
 
 **Tasks**:
 
-1. Update `package.json` configuration: (completed)
-   - `package.json` updated with project values (name, `config.*`, `repository`, `author`, `bugs`, `homepage`, and `description`).
+1. ✅ Update `package.json` configuration
+   - `package.json` updated with project values (name, `config.*`, `repository`, `author`, `bugs`, `homepage`, and `description`)
 
-2. Create `.env` file:
-   - Copy from `.env.example`
-   - Configure paths to Zotero 7 beta installation
+2. ✅ Create `.env` file
+   - User created and configured `.env` with Zotero 7 installation paths
 
-3. Clean up template examples:
-   - Review `src/modules/examples.ts` for reference patterns
-   - Remove unnecessary example code after understanding patterns
-   - Update `src/hooks.ts` to remove example registrations
+3. ✅ Clean up template examples
+   - Removed all example factory imports and calls from `src/hooks.ts`
+   - Deleted `src/modules/examples.ts` file completely
+   - Simplified `onStartup()` and `onMainWindowLoad()` functions
+   - Added TODO comment for reader event listener registration
 
-4. Set up locale files:
-   - Add Japanese locale (`addon/locale/ja-JP/`)
-   - Add English locale (`addon/locale/en-US/`)
-   - Define strings for button labels and messages
+4. ✅ Set up locale files
+   - Created Japanese locale files in `addon/locale/ja-JP/` (addon.ftl, mainWindow.ftl, preferences.ftl)
+   - Updated English locale files in `addon/locale/en-US/` with plugin-specific strings
+   - Defined strings for button labels, tooltips, and user feedback messages
 
 **Completion Criteria**:
 
-- Plugin loads successfully in Zotero 7
-- No template examples remain active
-- Basic plugin structure is in place
+- ✅ Plugin loads successfully in Zotero 7 (verified with `npm test`)
+- ✅ No template examples remain active
+- ✅ Basic plugin structure is in place
+- ✅ Plugin builds successfully without TypeScript errors
 
 ---
 
