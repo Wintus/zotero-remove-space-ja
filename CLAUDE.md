@@ -38,15 +38,13 @@ npm run release
 ## Development Status
 
 - ✅ **Phase 1**: Project Setup - Complete
-  - `package.json` configured, `.env` created, template cleaned, locales set up
-  - Plugin builds and loads in Zotero 7
+- ✅ **Phase 3**: Space Removal Logic - Complete (implemented out of order)
+- ✅ **Phase 2**: Annotation Button UI - Complete
+  - `src/modules/reader.ts` created with button injection and event handling
+  - Integrated with textProcessor from Phase 3
+  - Builds successfully; ready for testing in Zotero 7
 
-- ✅ **Phase 3**: Space Removal Logic - Core implementation complete (done out of order)
-  - `src/utils/textProcessor.ts` created with Unicode regex pattern
-  - Builds without errors; integration and testing pending
-
-- 🚧 **Phase 2**: Annotation Button UI - In progress
-  - Next: Create `src/modules/reader.ts` with button injection logic
+**Next**: Test plugin with real PDF annotations in Zotero 7 to verify functionality.
 
 See `plan.md` for full details.
 
@@ -82,6 +80,7 @@ This plugin runs as a bootstrapped Firefox extension. Key lifecycle:
 ```
 
 **Template Examples**: The template's `src/modules/examples.ts` has been removed from this project as part of Phase 1 cleanup. For reference patterns, consult:
+
 - The [zotero-plugin-template examples](https://github.com/windingwind/zotero-plugin-template/blob/main/src/modules/examples.ts)
 - The [zotero-pdf-translate implementation](https://github.com/windingwind/zotero-pdf-translate) (our reference implementation)
 - The [zotero-plugin-toolkit documentation](https://windingwind.github.io/zotero-plugin-toolkit/reference/)
