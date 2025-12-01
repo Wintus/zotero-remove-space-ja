@@ -35,15 +35,20 @@ npm run test
 npm run release
 ```
 
-## Phase 1 Status: ✅ Complete
+## Development Status
 
-- ✅ `package.json` configured with plugin metadata
-- ✅ `.env` created with Zotero 7 paths
-- ✅ Template examples removed (`src/modules/examples.ts` deleted, `src/hooks.ts` cleaned)
-- ✅ Locale files set up (en-US and ja-JP)
-- ✅ Plugin builds and loads in Zotero 7
+- ✅ **Phase 1**: Project Setup - Complete
+  - `package.json` configured, `.env` created, template cleaned, locales set up
+  - Plugin builds and loads in Zotero 7
 
-See `plan.md` for detailed development plan and next phases.
+- ✅ **Phase 3**: Space Removal Logic - Core implementation complete (done out of order)
+  - `src/utils/textProcessor.ts` created with Unicode regex pattern
+  - Builds without errors; integration and testing pending
+
+- 🚧 **Phase 2**: Annotation Button UI - In progress
+  - Next: Create `src/modules/reader.ts` with button injection logic
+
+See `plan.md` for full details.
 
 ## Configuration Files
 

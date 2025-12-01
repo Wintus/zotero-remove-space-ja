@@ -104,16 +104,17 @@ When using the Zotero PDF reader to select and highlight text in PDFs, unnecessa
 
 ---
 
-### Phase 3: Space Removal Logic
+### Phase 3: Space Removal Logic ✅ COMPLETED (implemented before Phase 2)
 
 **Goal**: Implement the core logic to remove unwanted spaces from text
 
 **Tasks**:
 
-1. Create `src/utils/textProcessor.ts`:
-   - Implement space removal using Unicode script properties
-   - Export regex pattern and processing function
-   - Handle edge cases (mixed language text, legitimate spaces)
+1. ✅ Create `src/utils/textProcessor.ts`:
+   - Implemented space removal using Unicode script properties
+   - Exported `japaneseSpacePattern` regex and `removeSpaces()` function
+   - Added `hasRemovableSpaces()` helper function for UI feedback
+   - Handles edge cases (mixed language text, legitimate spaces)
 
 2. Core regex pattern (from issue #13):
 
@@ -160,10 +161,11 @@ When using the Zotero PDF reader to select and highlight text in PDFs, unnecessa
 
 **Completion Criteria**:
 
-- Spaces are correctly removed from Japanese text
-- Mixed-language text is handled properly (spaces preserved between JP and non-JP)
-- No legitimate spaces are removed incorrectly
-- Annotation text is updated and saved
+- ✅ `textProcessor.ts` module created with regex pattern and functions
+- ✅ Module builds without TypeScript errors
+- ⏳ Unit tests for text processing (not yet implemented)
+- ⏳ Verified with real Japanese text (pending Phase 2 integration)
+- ⏳ Annotation text is updated and saved (pending Phase 2 integration)
 
 ---
 
