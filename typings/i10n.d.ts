@@ -3,6 +3,9 @@
 /* eslint-disable */
 // @ts-nocheck
 export type FluentMessageId =
+  | 'button-processing'
+  | 'button-remove-space'
+  | 'button-remove-space-tooltip'
   | 'item-info-row-example-label'
   | 'item-section-example1-head-text'
   | 'item-section-example1-sidenav-tooltip'
@@ -13,6 +16,9 @@ export type FluentMessageId =
   | 'menuitem-label'
   | 'menuitem-submenulabel'
   | 'menupopup-label'
+  | 'message-error'
+  | 'message-no-changes'
+  | 'message-success'
   | 'pref-enable'
   | 'pref-help'
   | 'pref-input'

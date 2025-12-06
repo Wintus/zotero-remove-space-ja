@@ -1,5 +1,4 @@
-pref-title = Addon Template Example
+pref-title = Remove Space (Japanese)
 pref-enable =
-    .label = Enable
-pref-input = Input
+    .label = Enable automatic space removal
 pref-help = { $name } Build { $version } { $time }

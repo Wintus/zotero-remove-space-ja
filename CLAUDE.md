@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a **fresh Zotero 7 plugin repository** generated from the [Zotero Plugin Template](https://github.com/windingwind/zotero-plugin-template). The repository contains the template's boilerplate code and examples, but **no custom features have been implemented yet**. New features will be developed on top of this template.
+This is a **Zotero 7 plugin** that removes unnecessary spaces from PDF annotations, particularly for Japanese text. The plugin is built on the [Zotero Plugin Template](https://github.com/windingwind/zotero-plugin-template).
+
+**Current Status**: Phase 1 (Project Setup and Configuration) is complete. The plugin successfully builds and loads in Zotero 7. Next phases will implement the annotation button UI and space removal logic.
 
 The plugin uses TypeScript and the zotero-plugin-toolkit for development.
 
@@ -33,25 +35,18 @@ npm run test
 npm run release
 ```
 
-## First Steps for Development
+## Development Status
 
-Before implementing new features, you should:
+- ✅ **Phase 1**: Project Setup - Complete
+- ✅ **Phase 3**: Space Removal Logic - Complete (implemented out of order)
+- ✅ **Phase 2**: Annotation Button UI - Complete
+  - `src/modules/reader.ts` created with button injection and event handling
+  - Integrated with textProcessor from Phase 3
+  - Builds successfully; ready for testing in Zotero 7
 
-1. **Update `package.json`** - The template values need to be customized:
-   - `name`, `version`, `description`
-   - `config.addonName` - Display name in Zotero's plugin manager
-   - `config.addonID` - Unique ID (e.g., `yourplugin@yourdomain.com`) - **CRITICAL to avoid conflicts**
-   - `config.addonRef` - Short reference used as prefix for IDs
-   - `config.addonInstance` - Global instance name (`Zotero.${addonInstance}`)
-   - `config.prefsPrefix` - Preference key prefix
-   - `repository`, `author`, `bugs`, `homepage` - Repository URLs
+**Next**: Test plugin with real PDF annotations in Zotero 7 to verify functionality.
 
-2. **Create `.env`** - Copy `.env.example` and configure paths to your Zotero beta installation
-
-3. **Remove/Replace Template Examples** - When ready to implement features:
-   - `src/modules/examples.ts` contains extensive template examples - review for reference, then remove what's not needed
-   - Update `src/hooks.ts` to remove example registrations and add your own
-   - Replace template UI/locale files in `addon/`
+See `plan.md` for full details.
 
 ## Configuration Files
 
@@ -84,22 +79,19 @@ This plugin runs as a bootstrapped Firefox extension. Key lifecycle:
 (Zotero, ZoteroPane, Zotero_Tabs, window, document, rootURI, ztoolkit, addon);
 ```
 
-**Template Examples**: `src/modules/examples.ts` contains extensive reference examples of common plugin operations using decorators (@example) for each factory class. These examples demonstrate:
+**Template Examples**: The template's `src/modules/examples.ts` has been removed from this project as part of Phase 1 cleanup. For reference patterns, consult:
 
-- Basic: Notifiers, Preferences
-- Shortcuts: Keyboard shortcuts registration
-- UI: Stylesheets, context menus, columns, item pane sections, reader sections
-- Preferences: Preference pane UI
-- Helpers: Dialogs, clipboard, file picker, progress windows
-- Prompts: Obsidian-style command palette (Shift+P)
-
-**Currently all examples are active** - they will show up when running `npm start`. Review them to understand patterns, then remove what you don't need when implementing your feature.
+- The [zotero-plugin-template examples](https://github.com/windingwind/zotero-plugin-template/blob/main/src/modules/examples.ts)
+- The [zotero-pdf-translate implementation](https://github.com/windingwind/zotero-pdf-translate) (our reference implementation)
+- The [zotero-plugin-toolkit documentation](https://windingwind.github.io/zotero-plugin-toolkit/reference/)
 
 ### Module Organization
 
-- `src/modules/` - Feature implementations (examples.ts, preferenceScript.ts)
-- `src/utils/` - Utilities (locale.ts, prefs.ts, window.ts, ztoolkit.ts)
+- `src/modules/` - Feature implementations (preferenceScript.ts, reader.ts [planned])
+- `src/utils/` - Utilities (locale.ts, prefs.ts, window.ts, ztoolkit.ts, textProcessor.ts [planned])
 - `addon/` - Static assets (manifest.json, preferences.xhtml, locale files, CSS)
+- `addon/locale/en-US/` - English translations
+- `addon/locale/ja-JP/` - Japanese translations
 
 ### ZToolkit
 
@@ -147,14 +139,14 @@ The Zotero documentation is incomplete. Strategies for finding APIs:
 
 ### Adding a New Feature
 
-1. Create a new module in `src/modules/` (or use existing `examples.ts` as starting point)
-2. Export factory classes with static methods decorated with `@example`
+1. Create a new module in `src/modules/` or utility in `src/utils/`
+2. Export factory classes or utility functions
 3. Register your feature in appropriate hook in `src/hooks.ts`:
-   - `onStartup()` - Register notifiers, preferences, columns, etc.
+   - `onStartup()` - Register reader event listeners, notifiers, preferences, etc.
    - `onMainWindowLoad()` - Register window-specific UI (menus, stylesheets, prompts)
    - `onShutdown()` - Clean up (usually just `ztoolkit.unregisterAll()`)
-4. Add locale strings in `addon/locale/*/` as FTL files
-5. Test with hot reload (`npm start`)
+4. Add locale strings in `addon/locale/en-US/` and `addon/locale/ja-JP/` as FTL files
+5. Test with hot reload (`npm start`) or build and test (`npm run build && npm test`)
 
 ### Accessing Zotero Items
 
