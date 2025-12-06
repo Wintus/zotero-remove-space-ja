@@ -32,12 +32,9 @@ export const registerReaderEventListeners = () => {
  *
  * @param event - The render event containing reader, doc, params, and append function
  */
-const onAnnotationHeaderRender = (event: {
-  reader: _ZoteroTypes.ReaderInstance;
-  doc: Document;
-  params: any;
-  append: (elem: HTMLElement) => void;
-}): void => {
+const onAnnotationHeaderRender: _ZoteroTypes.Reader.EventHandler<
+  "renderSidebarAnnotationHeader"
+> = (event): void => {
   const { reader, doc, params, append } = event;
 
   // Get annotation data from params
