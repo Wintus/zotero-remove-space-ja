@@ -132,9 +132,9 @@ const handleRemoveSpaceClick = async (
     // Note: The runtime annotation object has a save() method not in the JSON type
     await (annotation as any)?.save?.();
 
-    // Trigger re-render of annotations to show the updated text
-    // The annotation manager's updateAnnotations method will refresh the display
-    (reader as any)?._annotationManager?.updateAnnotations?.([annotation]);
+    // Trigger re-render of the annotation sidebar to show the updated text
+    // The annotation manager's render method will refresh the display
+    (reader as any)?._annotationManager?.render?.();
 
     // Show success feedback
     showFeedback("message-success");
