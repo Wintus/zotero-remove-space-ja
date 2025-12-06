@@ -125,10 +125,7 @@ const handleRemoveSpaceClick = async (
     // Update the annotation text
     // The annotation is saved automatically by the reader upon modification
     annotation.text = processedText;
-
-    // Trigger re-render of the annotation sidebar to show the updated text
-    // The annotation manager's render method will refresh the display
-    (reader as any)?._annotationManager?.render?.();
+    reader.setAnnotations([annotation as any]);
 
     // Show success feedback
     showFeedback("message-success");
