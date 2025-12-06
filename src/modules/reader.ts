@@ -105,7 +105,7 @@ const onAnnotationHeaderRender = (event: {
  */
 const handleRemoveSpaceClick = async (
   reader: _ZoteroTypes.ReaderInstance,
-  annotation: any,
+  annotation: _ZoteroTypes.Annotations.AnnotationJson,
   button: HTMLButtonElement,
 ): Promise<void> => {
   try {
@@ -129,8 +129,8 @@ const handleRemoveSpaceClick = async (
     annotation.text = processedText;
 
     // Save the annotation
-    // Note: The exact API for saving might vary; this is based on common patterns
-    await annotation?.save?.();
+    // Note: The runtime annotation object has a save() method not in the JSON type
+    await (annotation as any)?.save?.();
 
     // Trigger re-render of annotations to show the updated text
     // The annotation manager's updateAnnotations method will refresh the display
