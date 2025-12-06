@@ -362,3 +362,4 @@ zotero-remove-space-ja/
 - [Zotero Plugin Development](https://www.zotero.org/support/dev/client_coding/plugin_development)
 - [zotero-plugin-toolkit API](https://windingwind.github.io/zotero-plugin-toolkit/reference/)
 - [zotero-pdf-translate (reference implementation)](https://github.com/windingwind/zotero-pdf-translate)
+- [Zotero Reader source code](https://github.com/zotero/reader) - For reader-specific internal APIs

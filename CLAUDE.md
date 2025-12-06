@@ -132,8 +132,9 @@ The Zotero documentation is incomplete. Strategies for finding APIs:
 
 1. **Use zotero-types** - Provides TypeScript definitions for most Zotero APIs (already included)
 2. **Search the Zotero source** - Clone https://github.com/zotero/zotero and search globally
-3. **Trace from UI to code** - Search UI labels in `.xhtml`/`.ftl` files → find locale keys → search those keys in `.js`/`.jsx` files
-4. **Use `ztoolkit.UI.createElement()`** instead of `document.createElement()` - provides automatic namespace detection (HTML/XUL/SVG) and cleanup on unload
+3. **Search the Reader source** - For PDF reader specific APIs, check https://github.com/zotero/reader (the reader is a separate React-based component with internal APIs like `_annotationManager`)
+4. **Trace from UI to code** - Search UI labels in `.xhtml`/`.ftl` files → find locale keys → search those keys in `.js`/`.jsx` files
+5. **Use `ztoolkit.UI.createElement()`** instead of `document.createElement()` - provides automatic namespace detection (HTML/XUL/SVG) and cleanup on unload
 
 ## Common Development Patterns
 
