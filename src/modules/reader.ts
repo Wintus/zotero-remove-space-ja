@@ -74,6 +74,7 @@ const onAnnotationHeaderRender = (event: {
         listener: (e: Event) => {
           e.stopPropagation();
           handleRemoveSpaceClick(
+            doc,
             annotation,
             button satisfies HTMLButtonElement,
           );
@@ -98,10 +99,12 @@ const onAnnotationHeaderRender = (event: {
  * This function processes the annotation text, removes spaces,
  * updates the annotation, and provides user feedback.
  *
+ * @param doc - The document object to manage focus
  * @param annotation - The annotation object to modify
  * @param button - The button element that was clicked
  */
 const handleRemoveSpaceClick = async (
+  doc: Document,
   annotation: any,
   button: HTMLButtonElement,
 ): Promise<void> => {
@@ -128,6 +131,12 @@ const handleRemoveSpaceClick = async (
     // Save the annotation
     // Note: The exact API for saving might vary; this is based on common patterns
     await annotation?.save?.();
+
+    // Blur the focused element to make the changes visible immediately
+    // This unfocuses the annotation so the updated text is displayed
+    if (doc.activeElement instanceof HTMLElement) {
+      doc.activeElement.blur();
+    }
 
     // Show success feedback
     showFeedback("message-success");
