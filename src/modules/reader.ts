@@ -38,7 +38,7 @@ const onAnnotationHeaderRender = (event: {
   params: any;
   append: (elem: HTMLElement) => void;
 }): void => {
-  const { doc, params, append } = event;
+  const { reader, doc, params, append } = event;
 
   // Get annotation data from params
   const annotation = params?.annotation;
@@ -74,7 +74,7 @@ const onAnnotationHeaderRender = (event: {
         listener: (e: Event) => {
           e.stopPropagation();
           handleRemoveSpaceClick(
-            doc,
+            reader,
             annotation,
             button satisfies HTMLButtonElement,
           );
@@ -99,12 +99,12 @@ const onAnnotationHeaderRender = (event: {
  * This function processes the annotation text, removes spaces,
  * updates the annotation, and provides user feedback.
  *
- * @param doc - The document object to manage focus
+ * @param reader - The reader instance to trigger re-rendering
  * @param annotation - The annotation object to modify
  * @param button - The button element that was clicked
  */
 const handleRemoveSpaceClick = async (
-  doc: Document,
+  reader: _ZoteroTypes.ReaderInstance,
   annotation: any,
   button: HTMLButtonElement,
 ): Promise<void> => {
@@ -132,9 +132,9 @@ const handleRemoveSpaceClick = async (
     // Note: The exact API for saving might vary; this is based on common patterns
     await annotation?.save?.();
 
-    // Blur the focused element to make the changes visible immediately
-    // This unfocuses the annotation so the updated text is displayed
-    (doc.activeElement as any)?.blur?.();
+    // Trigger re-render of annotations to show the updated text
+    // The annotation manager's updateAnnotations method will refresh the display
+    (reader as any)?._annotationManager?.updateAnnotations?.([annotation]);
 
     // Show success feedback
     showFeedback("message-success");
