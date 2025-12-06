@@ -127,9 +127,7 @@ const handleRemoveSpaceClick = async (
 
     // Save the annotation
     // Note: The exact API for saving might vary; this is based on common patterns
-    if (annotation.save) {
-      await annotation.save();
-    }
+    await annotation?.save?.();
 
     // Show success feedback
     showFeedback("message-success");
