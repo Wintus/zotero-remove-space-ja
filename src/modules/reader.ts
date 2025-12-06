@@ -134,9 +134,7 @@ const handleRemoveSpaceClick = async (
 
     // Blur the focused element to make the changes visible immediately
     // This unfocuses the annotation so the updated text is displayed
-    if (doc.activeElement instanceof HTMLElement) {
-      doc.activeElement.blur();
-    }
+    (doc.activeElement as any)?.blur?.();
 
     // Show success feedback
     showFeedback("message-success");
