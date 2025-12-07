@@ -105,6 +105,10 @@ const handleRemoveSpaceClick = async (
   annotation: _ZoteroTypes.Annotations.AnnotationJson,
   button: HTMLButtonElement,
 ): Promise<void> => {
+  const item = reader._item;
+  ztoolkit.log("item:", item);
+  ztoolkit.log("annotation:", annotation);
+  ztoolkit.log(`Removing spaces from annotation ID ${annotation.id}...`);
   try {
     // Disable button during processing
     button.disabled = true;
@@ -123,9 +127,10 @@ const handleRemoveSpaceClick = async (
     }
 
     // Update the annotation text
-    // The annotation is saved automatically by the reader upon modification
     annotation.text = processedText;
-    reader.setAnnotations([annotation as any]);
+    item.annotationText = processedText;
+    // Save the updated annotation as an item
+    item.save();
 
     // Show success feedback
     showFeedback("message-success");
