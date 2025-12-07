@@ -41,7 +41,12 @@
       "Bash(node:*)",
       "Bash(tsc:*)",
       "Bash(npx:*)",
-      "Bash(gh pr diff:*)"
+      "Bash(gh pr diff:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:github.io)",
+      "WebFetch(domain:zotero.com)",
+      "WebFetch(domain:www.zotero.com)",
+      "WebSearch"
     ],
     "deny": [
       "Bash(rm -rf:*)",
