@@ -46,6 +46,7 @@
       "WebFetch(domain:github.io)",
       "WebFetch(domain:zotero.com)",
       "WebFetch(domain:www.zotero.com)",
+      "WebSearch"
     ],
     "deny": [
       "Bash(rm -rf:*)",
