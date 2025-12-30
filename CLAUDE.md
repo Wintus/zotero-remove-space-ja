@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a **Zotero 7 plugin** that removes unnecessary spaces from PDF annotations, particularly for Japanese text. The plugin is built on the [Zotero Plugin Template](https://github.com/windingwind/zotero-plugin-template).
 
-**Current Status**: Phase 1 (Project Setup and Configuration) is complete. The plugin successfully builds and loads in Zotero 7. Next phases will implement the annotation button UI and space removal logic.
+The plugin adds a "Remove Space" button to each annotation in the PDF reader sidebar. Clicking the button removes spaces between Japanese characters (Kanji, Hiragana, Katakana) while preserving spaces between Japanese and non-Japanese characters.
 
 The plugin uses TypeScript and the zotero-plugin-toolkit for development.
 
@@ -35,18 +35,10 @@ npm run test
 npm run release
 ```
 
-## Development Status
+## Core Components
 
-- ✅ **Phase 1**: Project Setup - Complete
-- ✅ **Phase 3**: Space Removal Logic - Complete (implemented out of order)
-- ✅ **Phase 2**: Annotation Button UI - Complete
-  - `src/modules/reader.ts` created with button injection and event handling
-  - Integrated with textProcessor from Phase 3
-  - Builds successfully; ready for testing in Zotero 7
-
-**Next**: Test plugin with real PDF annotations in Zotero 7 to verify functionality.
-
-See `plan.md` for full details.
+- `src/modules/reader.ts` - Button injection into annotation sidebar using `renderSidebarAnnotationHeader` event
+- `src/utils/textProcessor.ts` - Space removal logic using Unicode script properties
 
 ## Configuration Files
 
@@ -87,8 +79,8 @@ This plugin runs as a bootstrapped Firefox extension. Key lifecycle:
 
 ### Module Organization
 
-- `src/modules/` - Feature implementations (preferenceScript.ts, reader.ts [planned])
-- `src/utils/` - Utilities (locale.ts, prefs.ts, window.ts, ztoolkit.ts, textProcessor.ts [planned])
+- `src/modules/` - Feature implementations (preferenceScript.ts, reader.ts)
+- `src/utils/` - Utilities (locale.ts, prefs.ts, window.ts, ztoolkit.ts, textProcessor.ts)
 - `addon/` - Static assets (manifest.json, preferences.xhtml, locale files, CSS)
 - `addon/locale/en-US/` - English translations
 - `addon/locale/ja-JP/` - Japanese translations
@@ -174,5 +166,19 @@ const itemIDs = await s.search();
 - Preference keys are automatically prefixed with `prefsPrefix` during build
 - FTL localization files are automatically prefixed to avoid conflicts
 - Environment variable `addon.data.env` is `"development"` or `"production"` - use this to enable/disable features
-- Update `CLAUDE.md` and/or `plan.md` when an item gets done.
-- Commit changes in adequate units.
+- Commit changes in adequate units
+
+## Key Technical Decisions
+
+1. **UI Approach**: Button added to each annotation in sidebar (using `renderSidebarAnnotationHeader` event)
+2. **Processing Trigger**: Manual button click (not auto-process on annotation creation)
+3. **Scope**: Japanese text (Kanji, Hiragana, Katakana)
+4. **Modification Strategy**: In-place annotation text update via Zotero API
+
+## References
+
+- [Zotero Plugin Template](https://github.com/windingwind/zotero-plugin-template) - Base template
+- [zotero-plugin-toolkit](https://github.com/windingwind/zotero-plugin-toolkit) - Development toolkit
+- [zotero-pdf-translate](https://github.com/windingwind/zotero-pdf-translate) - Reference implementation for reader integration
+- [Zotero PDF Reader Annotations](https://www.zotero.org/support/pdf_reader#creating_annotations) - User documentation
+- [Zotero Plugin Development](https://www.zotero.org/support/dev/client_coding/plugin_development) - Official dev docs
