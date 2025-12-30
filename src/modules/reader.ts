@@ -122,14 +122,18 @@ const handleRemoveSpaceClick = async (
       return;
     }
 
-    // Update the annotation text
-    annotation.text = processedText;
-
-    // Save the annotation
-    // Note: The exact API for saving might vary; this is based on common patterns
-    if (annotation.save) {
-      await annotation.save();
+    // Get the actual Zotero item using libraryID and key
+    const annotationItem = Zotero.Items.getByLibraryAndKey(
+      annotation.libraryID,
+      annotation.id,
+    );
+    if (!annotationItem) {
+      throw new Error("Annotation item not found");
     }
+
+    // Update and persist using the correct Zotero API
+    annotationItem.annotationText = processedText;
+    await annotationItem.saveTx();
 
     // Show success feedback
     showFeedback("message-success");
