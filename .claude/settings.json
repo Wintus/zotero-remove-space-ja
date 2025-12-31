@@ -15,7 +15,6 @@
       "Bash(npm run dev:*)",
       "Bash(npm run test:*)",
       "Bash(npm run lint:*)",
-      "Bash(npm run release:*)",
       "Bash(npm audit:*)",
       "Bash(npm outdated:*)",
       "Bash(git status:*)",
@@ -52,6 +51,7 @@
       "Bash(rm -rf:*)",
       "Bash(git push --force:*)",
       "Bash(git reset --hard:*)",
+      "Bash(npm run release:*)",
       "Bash(npm publish:*)"
     ],
     "ask": [
