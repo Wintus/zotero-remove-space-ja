@@ -31,7 +31,7 @@ npm run lint:fix
 # Run tests
 npm run test
 
-# Release (bumps version, commits, tags, and triggers GitHub Actions)
+# Release (CI only; creates GitHub Release on version tag push)
 npm run release
 ```
 
