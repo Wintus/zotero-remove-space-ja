@@ -34,9 +34,7 @@
       "Bash(ls:*)",
       "Bash(dir:*)",
       "Bash(tree:*)",
-      "Bash(node:*)",
       "Bash(tsc:*)",
-      "Bash(npx:*)",
       "Bash(gh pr diff:*)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:github.io)",
@@ -51,6 +49,8 @@
       "Bash(git restore:*)",
       "Bash(git switch:*)",
       "Bash(git tag:*)",
+      "Bash(node:*)",
+      "Bash(npx:*)",
       "Bash(npm uninstall:*)"
     ],
     "deny": [
