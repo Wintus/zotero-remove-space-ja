@@ -27,19 +27,14 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(git pull:*)",
-      "Bash(git checkout:*)",
       "Bash(git merge:*)",
       "Bash(git rebase:*)",
       "Bash(git mv:*)",
       "Bash(git rm:*)",
-      "Bash(git restore:*)",
-      "Bash(git switch:*)",
       "Bash(ls:*)",
       "Bash(dir:*)",
       "Bash(tree:*)",
-      "Bash(node:*)",
       "Bash(tsc:*)",
-      "Bash(npx:*)",
       "Bash(gh pr diff:*)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:github.io)",
@@ -47,18 +42,23 @@
       "WebFetch(domain:www.zotero.com)",
       "WebSearch"
     ],
+    "ask": [
+      "Bash(git stash:*)",
+      "Bash(git clean:*)",
+      "Bash(git checkout:*)",
+      "Bash(git restore:*)",
+      "Bash(git switch:*)",
+      "Bash(git tag:*)",
+      "Bash(node:*)",
+      "Bash(npx:*)",
+      "Bash(npm uninstall:*)"
+    ],
     "deny": [
       "Bash(rm -rf:*)",
       "Bash(git push --force:*)",
       "Bash(git reset --hard:*)",
       "Bash(npm run release:*)",
       "Bash(npm publish:*)"
-    ],
-    "ask": [
-      "Bash(git stash:*)",
-      "Bash(git clean:*)",
-      "Bash(git tag:*)",
-      "Bash(npm uninstall:*)"
     ]
   }
 }
