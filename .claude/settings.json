@@ -27,13 +27,10 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(git pull:*)",
-      "Bash(git checkout:*)",
       "Bash(git merge:*)",
       "Bash(git rebase:*)",
       "Bash(git mv:*)",
       "Bash(git rm:*)",
-      "Bash(git restore:*)",
-      "Bash(git switch:*)",
       "Bash(ls:*)",
       "Bash(dir:*)",
       "Bash(tree:*)",
@@ -50,6 +47,9 @@
     "ask": [
       "Bash(git stash:*)",
       "Bash(git clean:*)",
+      "Bash(git checkout:*)",
+      "Bash(git restore:*)",
+      "Bash(git switch:*)",
       "Bash(git tag:*)",
       "Bash(npm uninstall:*)"
     ],
