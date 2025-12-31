@@ -47,18 +47,18 @@
       "WebFetch(domain:www.zotero.com)",
       "WebSearch"
     ],
+    "ask": [
+      "Bash(git stash:*)",
+      "Bash(git clean:*)",
+      "Bash(git tag:*)",
+      "Bash(npm uninstall:*)"
+    ],
     "deny": [
       "Bash(rm -rf:*)",
       "Bash(git push --force:*)",
       "Bash(git reset --hard:*)",
       "Bash(npm run release:*)",
       "Bash(npm publish:*)"
-    ],
-    "ask": [
-      "Bash(git stash:*)",
-      "Bash(git clean:*)",
-      "Bash(git tag:*)",
-      "Bash(npm uninstall:*)"
     ]
   }
 }
