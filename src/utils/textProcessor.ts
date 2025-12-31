@@ -15,7 +15,6 @@
  * - `\p{scx=Katakana}` - Matches Katakana characters using Script_Extensions
  * - `\s+` - Matches one or more whitespace characters
  * - `(?=...)` - Positive lookahead: ensures the space is followed by a Japanese character
- * - `g` flag - Global matching (replace all occurrences)
  * - `u` flag - Unicode mode (required for \p{scx=...} syntax)
  *
  * Note: Using `scx` (Script_Extensions) instead of `Script` catches more characters
@@ -24,8 +23,20 @@
  * This pattern automatically preserves spaces between Japanese and non-Japanese
  * characters (e.g., Latin letters, numbers), which is the desired behavior.
  */
-export const japaneseSpacePattern: RegExp =
-  /(?<=[\p{scx=Han}\p{scx=Hiragana}\p{scx=Katakana}])\s+(?=[\p{scx=Han}\p{scx=Hiragana}\p{scx=Katakana}])/gu;
+const japaneseSpacePattern: RegExp =
+  /(?<=[\p{scx=Han}\p{scx=Hiragana}\p{scx=Katakana}])\s+(?=[\p{scx=Han}\p{scx=Hiragana}\p{scx=Katakana}])/u;
+
+/**
+ * Regular expression pattern to match multiple consecutive whitespace characters.
+ *
+ * This pattern is used to normalize inconsistent spacing (e.g., double spaces)
+ * into a single space before applying Japanese-specific space removal.
+ */
+const multiSpacePattern: RegExp = /\s{2,}/;
+
+// Derive global versions for use with .replace()
+const japaneseSpacePatternGlobal = new RegExp(japaneseSpacePattern, "gu");
+const multiSpacePatternGlobal = new RegExp(multiSpacePattern, "g");
 
 /**
  * Remove unnecessary spaces from text containing Japanese characters.
@@ -47,22 +58,28 @@ export const japaneseSpacePattern: RegExp =
  * removeSpaces("Hello 世界 です")
  * // Returns: "Hello 世界です"
  *
- * // Preserves spaces with numbers
+ * // Normalizes double spaces at boundaries
+ * removeSpaces("Hello  世界 です")
+ * // Returns: "Hello 世界です"
+ *
+ * // Preserves spaces between numbers and Japanese (numbers are not JA characters)
  * removeSpaces("2024 年 1 月")
- * // Returns: "2024年1月"
+ * // Returns: "2024 年 1 月"
  * ```
  */
 export const removeSpaces = (text: string): string =>
-  text.replace(japaneseSpacePattern, "");
+  text
+    .replace(multiSpacePatternGlobal, " ")
+    .replace(japaneseSpacePatternGlobal, "");
 
 /**
- * Check if the text contains any spaces that would be removed.
+ * Check if the text contains any spaces that would be removed or normalized.
  *
  * Useful for determining whether the removeSpaces operation would
  * have any effect, allowing UI to provide appropriate feedback.
  *
  * @param text - The text to check
- * @returns true if the text contains removable spaces, false otherwise
+ * @returns true if the text contains removable or normalizable spaces, false otherwise
  */
 export const hasRemovableSpaces = (text: string): boolean =>
-  japaneseSpacePattern.test(text);
+  multiSpacePattern.test(text) || japaneseSpacePattern.test(text);
