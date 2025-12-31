@@ -1,7 +1,7 @@
 {
   "name": "zotero-remove-space-ja",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Remove unnecessary spaces from Japanese text in PDF annotations",
   "config": {
     "addonName": "Remove Space (JA)",
