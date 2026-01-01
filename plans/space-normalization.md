@@ -44,7 +44,7 @@ Japanese typography has varying conventions for Japanese-Western boundaries:
 
 3. **Smart Context-Aware**: Different rules for different contexts
    - Numbers + units: no space (`"2024年"`, `"100円"`)
-   - Standalone words: add space (`"PDF ファイル"`, `"API を使う"`)
+   - Particles attach directly (Hangul-style): `"PDFを読む"` (not `"PDF を読む"`)
 
 ## Design Sketch
 
@@ -65,19 +65,24 @@ export const hasRemovableSpaces: (text: string) => boolean;
 // Strategy is a pure function: text → text
 type NormalizationStrategy = (text: string) => string;
 
-// Strategy implementations (each builds on removeJaOnly as base)
+/** Removes spaces between Japanese characters only. Preserves JA↔Western boundaries. */
 const removeJaOnly: NormalizationStrategy = (text) => {
   /* current behavior */
 };
+
+/** removeJaOnly + adds spaces at ALL JA↔Western boundaries. */
 const addBoundaries: NormalizationStrategy = (text) => {
-  /* removeJaOnly + add boundary spaces */
+  /* ... */
 };
-/** Context-aware normalization: addBoundaries with exceptions for units/particles */
+
+/** Context-aware: addBoundaries with exceptions for units (年月日...) and particles (をはが...). */
 const smart: NormalizationStrategy = (text) => {
   /* ... */
 };
+
+/** Removes all spaces. Traditional/compact style. */
 const removeAll: NormalizationStrategy = (text) => {
-  /* remove all spaces */
+  /* ... */
 };
 
 // Registry for UI/preferences lookup
@@ -102,28 +107,45 @@ const hasNormalizableContent = (
 
 #### Regex Patterns to Add
 
+Following the existing pattern: define base patterns (for `.test()`), then derive global versions (for `.replace()`).
+
+**Japanese character set** (includes 約物 and ー via `\p{scx=Hiragana}` and/or `\p{scx=Katakana}`):
+
+```typescript
+const JA_CHARS = /[\p{scx=Han}\p{scx=Hiragana}\p{scx=Katakana}]/u;
+```
+
 **Detect Japanese↔Western boundaries:**
 
 ```typescript
-// Japanese followed by Western (no space)
-/(?<=[\p{scx=Han}\p{scx=Hiragana}\p{scx=Katakana}])(?=[\p{Script=Latin}\p{Nd}])/gu
+// Base patterns (for testing)
+const JA_TO_WESTERN =
+  /(?<=[\p{scx=Han}\p{scx=Hiragana}\p{scx=Katakana}])(?=[\p{Script=Latin}\p{Nd}])/u;
+const WESTERN_TO_JA =
+  /(?<=[\p{Script=Latin}\p{Nd}])(?=[\p{scx=Han}\p{scx=Hiragana}\p{scx=Katakana}])/u;
 
-// Western followed by Japanese (no space)
-/(?<=[\p{Script=Latin}\p{Nd}])(?=[\p{scx=Han}\p{scx=Hiragana}\p{scx=Katakana}])/gu
+// Derive global versions for use with .replace()
+const JA_TO_WESTERN_GLOBAL = new RegExp(JA_TO_WESTERN, "gu");
+const WESTERN_TO_JA_GLOBAL = new RegExp(WESTERN_TO_JA, "gu");
 ```
 
 **Smart detection for units/particles (boundary exceptions):**
 
 ```typescript
-// Digit→Unit boundary: don't add space (e.g., "2024年" stays as-is)
-const noSpaceBeforeUnit = /\d(?=[年月日時分秒円個人回台本枚頁度])/gu;
+/**
+ * Digit→Unit boundary: don't add space (e.g., "2024年" stays as-is)
+ * Japanese counters/units only: 年月日時分秒円個人回台本枚頁度
+ * No Latin units (KB, mm, etc.)
+ */
+const DIGIT_BEFORE_UNIT = /\d(?=[年月日時分秒円個人回台本枚頁度])/u;
+const DIGIT_BEFORE_UNIT_GLOBAL = new RegExp(DIGIT_BEFORE_UNIT, "gu");
 
-// Unit→Digit boundary: add space (e.g., "年2024" → "年 2024")
-// (no exception needed - follows normal addBoundaries behavior)
-
-// Japanese→Particle: no script boundary (both JA), handled by removeJaOnly
-// Particle patterns only relevant for removing OCR artifacts like "API を 使う"
-const spaceBeforeParticle = /\s+(?=[をはがのにへとより])/gu;
+/**
+ * Particles attach directly (Hangul-style): "PDFを読む" not "PDF を読む"
+ * Core particles only: をはがのにへと
+ */
+const SPACE_BEFORE_PARTICLE = /\s+(?=[をはがのにへと])/u;
+const SPACE_BEFORE_PARTICLE_GLOBAL = new RegExp(SPACE_BEFORE_PARTICLE, "gu");
 ```
 
 ### 2. UI Changes
@@ -133,7 +155,7 @@ const spaceBeforeParticle = /\s+(?=[をはがのにへとより])/gu;
 **Add normalization strategy preference:**
 
 ```xml
-<setting pref="extensions.zotero.removeSpaceJa.normalizationStrategy"
+<setting pref="extensions.zotero.japaneseSpaceNormalizer.strategy"
          type="menulist">
   <menulist>
     <menupopup>
@@ -157,9 +179,8 @@ const spaceBeforeParticle = /\s+(?=[をはがのにへとより])/gu;
 
 1. **`src/utils/textProcessor.ts`** + **`test/textProcessor.test.ts`**
    - Add `NormalizationStrategy` type and strategy functions
-   - Update `removeSpaces()` to `normalizeSpaces()`
+   - Rename `removeSpaces()` → `normalizeSpaces()`
    - Add boundary detection logic
-   - Keep backward compatibility with current behavior
    - Add tests for all strategies and edge cases
 
 2. **`src/modules/reader.ts`**
@@ -185,15 +206,18 @@ const spaceBeforeParticle = /\s+(?=[をはがのにへとより])/gu;
 
 ### 4. Example Transformations by Strategy
 
-| Input              | REMOVE_JA_ONLY (current) | ADD_BOUNDARIES   | SMART              | REMOVE_ALL       |
-| ------------------ | ------------------------ | ---------------- | ------------------ | ---------------- |
-| `"これ は 日本語"` | `"これは日本語"`         | `"これは日本語"` | `"これは日本語"`   | `"これは日本語"` |
-| `"Hello世界"`      | `"Hello世界"`            | `"Hello 世界"`   | `"Hello 世界"`     | `"Hello世界"`    |
-| `"2024年1月"`      | `"2024年1月"`            | `"2024 年 1 月"` | `"2024年1月"` ⭐   | `"2024年1月"`    |
-| `"100 円 です"`    | `"100円です"`            | `"100 円です"`   | `"100円です"` ⭐   | `"100円です"`    |
-| `"PDF を 読む"`    | `"PDF を読む"`           | `"PDF を読む"`   | `"PDF を読む"` ⭐  | `"PDFを読む"`    |
+| Input              | REMOVE_JA_ONLY (current) | ADD_BOUNDARIES   | SMART            | REMOVE_ALL       |
+| ------------------ | ------------------------ | ---------------- | ---------------- | ---------------- |
+| `"これ は 日本語"` | `"これは日本語"`         | `"これは日本語"` | `"これは日本語"` | `"これは日本語"` |
+| `"Hello世界"`      | `"Hello世界"`            | `"Hello 世界"`   | `"Hello 世界"`   | `"Hello世界"`    |
+| `"2024年1月"`      | `"2024年1月"`            | `"2024 年 1 月"` | `"2024年1月"` ⭐ | `"2024年1月"`    |
+| `"100 円 です"`    | `"100円です"`            | `"100 円です"`   | `"100円です"` ⭐ | `"100円です"`    |
+| `"PDF を 読む"`    | `"PDF を読む"`           | `"PDF を読む"`   | `"PDFを読む"` ⭐ | `"PDFを読む"`    |
 
-⭐ = SMART strategy uses context-aware rules (units attach to digits, particles at boundaries keep space)
+⭐ = SMART strategy uses context-aware rules:
+
+- Units attach to digits: `"2024年"` (no space)
+- Particles attach directly (Hangul-style): `"PDFを読む"` (no space before particle)
 
 ## Naming Recommendations
 
@@ -255,23 +279,25 @@ const spaceBeforeParticle = /\s+(?=[をはがのにへとより])/gu;
 
 ## Implementation Phases
 
-### Phase 1: Strategy Functions (Breaking Changes OK)
+### Phase 1: Strategy Functions
 
-1. **Rename** `removeSpaces()` → `normalizeSpaces()` (no backward compatibility wrapper)
+1. Rename `removeSpaces()` → `normalizeSpaces()`
 2. Add `NormalizationStrategy` type and strategy functions to `textProcessor.ts`
 3. Implement boundary detection regex patterns
 4. Implement all 4 strategies:
    - `removeJaOnly` (existing behavior)
-   - `addBoundaries` (add spaces at JA↔Western boundaries)
+   - `addBoundaries` (add spaces at ALL JA↔Western boundaries)
    - `smart` (context-aware, **set as default**)
    - `removeAll` (traditional style)
 5. Add tests for all strategies and edge cases
 
 ### Phase 2: Context Detection Patterns
 
-1. Define unit/particle patterns (年月日時分秒円, をはがの, etc.)
-2. Implement context detection for numbers + units
-3. Implement context detection for particles
+1. Define patterns:
+   - Units: `年月日時分秒円個人回台本枚頁度` (Japanese counters only)
+   - Core particles: `をはがのにへと`
+2. Implement context detection for numbers + units (no space)
+3. Implement context detection for particles (attach directly, Hangul-style)
 4. Add tests for unit/particle detection
 5. Test with real-world PDF annotation examples
 
@@ -303,14 +329,12 @@ const spaceBeforeParticle = /\s+(?=[をはがのにへとより])/gu;
 
 ## Migration Strategy
 
-**Post v1.0 Release**: Breaking changes now require deprecation strategy.
+**v0 Implementation**: Breaking changes are acceptable.
 
-**Note**: This plan was created during pre-release (Day 0), when breaking changes were acceptable. Now that v1.0 is released, consider:
-
-1. **Wrapper approach**: Keep `removeSpaces()` as alias calling `normalizeSpaces(text, removeJaOnly)`
-2. **Default strategy**: `removeJaOnly` to maintain current behavior for existing users
-3. **Opt-in**: Users can change to new strategies via preferences
-4. **Version note**: Document in changelog when new strategies are added
+- No backward compatibility wrappers needed
+- Rename `removeSpaces()` → `normalizeSpaces()` directly
+- Default strategy: `smart` (the new recommended behavior)
+- No deprecation notices required
 
 ## Appendix: Why Japanese-specific, not CJK/CJKV
 
