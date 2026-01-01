@@ -324,3 +324,21 @@ const spaceBeforeParticle = /\s+(?=[をはがのにへとより])/gu;
 Korean and Vietnamese have transitioned to alphabetic writing systems and don't have the Han character + Latin mixing problem that Japanese has. This plugin focuses on **Japanese typography conventions** for mixed Japanese-Western text.
 
 **Note on Chinese**: While Chinese text also mixes Han characters with Latin (e.g., "使用iPhone"), the typography conventions differ. Future expansion to Chinese would require separate research into Chinese typography standards (GB/T format standards, etc.)
+
+## Appendix: Why Not CSS `text-autospace`?
+
+CSS has a [`text-autospace`](https://developer.mozilla.org/en-US/docs/Web/CSS/text-autospace) property that automatically adds visual spacing between CJK and Latin characters:
+
+```css
+.annotation-text {
+  text-autospace: ideograph-alpha ideograph-numeric;
+}
+```
+
+**Why we can't use it:**
+
+1. **Browser support**: Requires Firefox 145+, but Zotero 7 uses Firefox 115 and Zotero 8 uses Firefox 140
+2. **Visual-only**: Doesn't modify actual text—copied/exported text still lacks spaces
+3. **Different goal**: We need normalized text for portability, not just visual presentation
+
+**Future consideration**: When Zotero upgrades to Firefox 145+, this could complement text normalization for display purposes.
