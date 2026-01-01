@@ -34,6 +34,10 @@ The current implementation leaves boundaries untouched, which can result in:
 
 Japanese typography has varying conventions for Japanese-Western boundaries:
 
+0. **Current Behavior**: Remove JA↔JA spaces only, leave boundaries as-is
+   - `"これ は 日本語"` → `"これは日本語"` (removes JA spaces)
+   - `"Hello世界"` → `"Hello世界"` (boundary unchanged)
+
 1. **Modern Digital Style**: Add spaces between Japanese and Western text
    - `"iPhoneを使う"` → `"iPhone を使う"`
    - Improves readability, common in web/digital content
@@ -47,6 +51,21 @@ Japanese typography has varying conventions for Japanese-Western boundaries:
    - Particles attach directly (Hangul-style): `"PDFを読む"` (not `"PDF を読む"`)
 
 ## Design Sketch
+
+### 0. Example Transformations by Strategy
+
+| Input              | REMOVE_JA_ONLY (current) | ADD_BOUNDARIES   | SMART            | REMOVE_ALL       |
+| ------------------ | ------------------------ | ---------------- | ---------------- | ---------------- |
+| `"これ は 日本語"` | `"これは日本語"`         | `"これは日本語"` | `"これは日本語"` | `"これは日本語"` |
+| `"Hello世界"`      | `"Hello世界"`            | `"Hello 世界"`   | `"Hello 世界"`   | `"Hello世界"`    |
+| `"2024年1月"`      | `"2024年1月"`            | `"2024 年 1 月"` | `"2024年1月"` ⭐ | `"2024年1月"`    |
+| `"100 円 です"`    | `"100円です"`            | `"100 円です"`   | `"100円です"` ⭐ | `"100円です"`    |
+| `"PDF を 読む"`    | `"PDF を読む"`           | `"PDF を読む"`   | `"PDFを読む"` ⭐ | `"PDFを読む"`    |
+
+⭐ = SMART strategy uses context-aware rules:
+
+- Units attach to digits: `"2024年"` (no space)
+- Particles attach directly (Hangul-style): `"PDFを読む"` (no space before particle)
 
 ### 1. Architecture Changes
 
@@ -203,21 +222,6 @@ const SPACE_BEFORE_PARTICLE_GLOBAL = new RegExp(SPACE_BEFORE_PARTICLE, "gu");
 
 6. **`package.json`**
    - Update plugin name/description to reflect new functionality
-
-### 4. Example Transformations by Strategy
-
-| Input              | REMOVE_JA_ONLY (current) | ADD_BOUNDARIES   | SMART            | REMOVE_ALL       |
-| ------------------ | ------------------------ | ---------------- | ---------------- | ---------------- |
-| `"これ は 日本語"` | `"これは日本語"`         | `"これは日本語"` | `"これは日本語"` | `"これは日本語"` |
-| `"Hello世界"`      | `"Hello世界"`            | `"Hello 世界"`   | `"Hello 世界"`   | `"Hello世界"`    |
-| `"2024年1月"`      | `"2024年1月"`            | `"2024 年 1 月"` | `"2024年1月"` ⭐ | `"2024年1月"`    |
-| `"100 円 です"`    | `"100円です"`            | `"100 円です"`   | `"100円です"` ⭐ | `"100円です"`    |
-| `"PDF を 読む"`    | `"PDF を読む"`           | `"PDF を読む"`   | `"PDFを読む"` ⭐ | `"PDFを読む"`    |
-
-⭐ = SMART strategy uses context-aware rules:
-
-- Units attach to digits: `"2024年"` (no space)
-- Particles attach directly (Hangul-style): `"PDFを読む"` (no space before particle)
 
 ## Naming Recommendations
 
